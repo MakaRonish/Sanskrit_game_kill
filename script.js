@@ -401,12 +401,13 @@ backgroundMusic.play().catch((error) => {
 
 // Handle Game Over
 function gameOver() {
+    drawScore()
 
     ctx.textAlign = 'center';
     ctx.fillStyle = "black";
     ctx.fillText("Game Over! Score is " + score, canvas.width / 2, canvas.height / 2);
     ctx.fillStyle = "white";
-    ctx.fillText("Game Over! Score is" + score, canvas.width / 2 + 5, canvas.height / 2 + 5);
+    ctx.fillText("Game Over! Score is " + score, canvas.width / 2 + 5, canvas.height / 2 + 5);
     playAgainButton.style.display = "block";
 }
 
