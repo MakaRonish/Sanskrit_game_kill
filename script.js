@@ -183,14 +183,14 @@ let pictures = [
 
 
 const meaningImages = {
-    "img1.png": "images/img1.png", // Agni (Fire)
-    "img2.png": "images/img2.png", // Jalam (Water)
-    "img3.png": "images/img3.png", // Vayu (Air)
-    "img4.png": "images/img4.png", // Prithvi (Earth)
-    "img5.png": "images/img5.png", // Aakash (Sky)
-    "img6.png": "images/img6.png", // Surya (Sun)
-    "img7.png": "images/img7.png", // Chandra (Moon)
-    "img8.png": "images/img8.png"  // Nadi (River)
+    "img1.png": "images/m1.png", // Agni (Fire)
+    "img2.png": "images/m2.png", // Jalam (Water)
+    "img3.png": "images/m3.png", // Vayu (Air)
+    "img4.png": "images/m4.png", // Prithvi (Earth)
+    "img5.png": "images/m5.png", // Aakash (Sky)
+    "img6.png": "images/m6.png", // Surya (Sun)
+    "img7.png": "images/m7.png", // Chandra (Moon)
+    "img8.png": "images/m8.png"  // Nadi (River)
 };
 
 const playAgainButton = document.createElement("button");
