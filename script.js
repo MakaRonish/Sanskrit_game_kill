@@ -177,20 +177,34 @@ let ravens = [];
 let explosions = [];
 let pictures = [
     "img1.png", "img2.png", "img3.png", "img4.png",
-    "img5.png", "img6.png", "img7.png", "img8.png"
+    "img5.png", "img6.png", "img7.png", "img8.png", "img9.png", "img10.png", "img11.png", "img12.png", "img13.png", "img14.png", "img15.png", "img16.png", "img17.png", "img18.png", "img19.png", "img20.png", "img21.png", "img22.png",
 ];
 
 
 
 const meaningImages = {
-    "img1.png": "images/m1.png", // Agni (Fire)
-    "img2.png": "images/m2.png", // Jalam (Water)
-    "img3.png": "images/m3.png", // Vayu (Air)
-    "img4.png": "images/m4.png", // Prithvi (Earth)
-    "img5.png": "images/m5.png", // Aakash (Sky)
-    "img6.png": "images/m6.png", // Surya (Sun)
-    "img7.png": "images/m7.png", // Chandra (Moon)
-    "img8.png": "images/m8.png"  // Nadi (River)
+    "img1.png": "images/m1.png",
+    "img2.png": "images/m2.png",
+    "img3.png": "images/m3.png",
+    "img4.png": "images/m4.png",
+    "img5.png": "images/m5.png",
+    "img6.png": "images/m6.png",
+    "img7.png": "images/m7.png",
+    "img8.png": "images/m8.png",
+    "img9.png": "images/m9.png",
+    "img10.png": "images/m10.png",
+    "img11.png": "images/m11.png",
+    "img12.png": "images/m12.png",
+    "img13.png": "images/m13.png",
+    "img14.png": "images/m14.png",
+    "img15.png": "images/m15.png",
+    "img16.png": "images/m16.png",
+    "img17.png": "images/m17.png",
+    "img18.png": "images/m18.png",
+    "img19.png": "images/m19.png",
+    "img20.png": "images/m20.png",
+    "img21.png": "images/m21.png",
+    "img22.png": "images/m22.png",
 };
 
 const playAgainButton = document.createElement("button");
