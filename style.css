@@ -31,6 +31,11 @@ canvas {
     left: 90%;
 }
 
+#set {
+    background-color: transparent;
+    border: none;
+}
+
 .button {
     background-color: #c2fbd7;
     border-radius: 100px;
