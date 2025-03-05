@@ -59,11 +59,11 @@ for (let i = 0; i < final.length; i++) {
     for (let j = 0; j < final[i].length; j++) {
         let radioBut;
         if (j === 0) {
-            radioBut = `<input type="radio" id="q${i}_option${j}" name="q${i}_option${j}" value="${SansWord[final[i][j]]}">
-    <label for="q${i}">${SansWord[final[i][j]]}</label><br>`
+            radioBut = `<div id='q${i}_option${j}'><input type="radio" id="q${i}_option${j}" name="q${i}" value="c">
+    <label for="q${i}">${SansWord[final[i][j]]}</label></div>`
         } else {
-            radioBut = `<input type="radio" id="q${i}" name="q${i}_option${j}" value="${SansWord[final[i][j]]}">
-    <label for="q${i}_option${j}">${SansWord[final[i][j]]}</label><br>`
+            radioBut = `<div id='q${i}_option${j}'><input type="radio" id="q${i}_option${j}" name="q${i}" value="w">
+    <label for="q${i}_option${j}">${SansWord[final[i][j]]}</label></div>`
         }
         butradio[i].push(radioBut)
 
@@ -71,7 +71,7 @@ for (let i = 0; i < final.length; i++) {
 
 }
 
-console.log(butradio)
+
 
 
 for (let i = 0; i < 5; i++) {
@@ -80,32 +80,57 @@ for (let i = 0; i < 5; i++) {
     }
 }
 
-console.log(elements[1].innerHTML)
 
+let Ans = []
+let eleid = []
+let Score = 0
+let ele = []
+const form = document.getElementById('quizForm');
+form.addEventListener("submit", (target) => {
+    target.preventDefault();
+    Ans = []
+    eleid = []
+    Score = 0
+    ele = []
+    const InputTag = document.getElementsByTagName('input');
+    for (let i = 0; i < InputTag.length; i++) {
+        if (InputTag[i].checked) {
+            Ans.push(InputTag[i].value)
+            eleid.push(InputTag[i].id)
+        }
+    }
+    Ans.forEach((e) => {
 
-document.getElementById("quizForm").addEventListener("submit", function (event) {
-    event.preventDefault();
+        if (e === 'c') {
+            Score += 1
+        }
+    })
 
-    let answers = {};
-    let allAnswered = true;
+    console.log(Ans)
+    console.log(Score)
+    console.log(eleid)
+    for (let i = 0; i < eleid.length; i++) {
+        ele.push(document.getElementById(eleid[i]))
+    }
+    console.log(ele)
 
-    for (let i = 1; i <= 5; i++) {
-        let selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+    for (let i = 0; i < Ans.length; i++) {
+        if (Ans[i] === 'c') {
+            ele[i].style.backgroundColor = 'green'
 
-        if (selectedOption) {
-            answers[`q${i}`] = selectedOption.value;
         } else {
-            allAnswered = false;
+            ele[i].style.backgroundColor = 'red'
+
         }
     }
 
-    if (!allAnswered) {
-        document.getElementById("result").innerText = "Please answer all questions.";
-    } else {
-        document.getElementById("result").innerText = "Your answers: " + JSON.stringify(answers);
-        console.log(answers);
-    }
-});
+
+
+
+})
+
+
+
 
 
 

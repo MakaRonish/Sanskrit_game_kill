@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .g {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="" id="form">
+        <p>What is a GG</p>
+        <div class="g">
+            <input type="radio" value="w" name="q1" id="'g">
+            <label for="a">A</label>
+        </div>
+        <input type="radio" value="c" name="q1">
+        <label for="b">b</label>
+        <input type="radio" value="c" name="q1">
+        <label for="c">c</label>
+        <p>What is a GG</p>
+        <input type="radio" value="w" name="q2">
+        <label for="a">A</label>
+        <input type="radio" value="c" name="q2">
+        <label for="b">b</label>
+        <input type="radio" value="c" name="q2">
+        <label for="c">c</label>
+        <p>What is a GG</p>
+        <input type="radio" value="w" name="q3">
+        <label for="a">A</label>
+        <input type="radio" value="c" name="q3">
+        <label for="b">b</label>
+        <input type="radio" value="c" name="q3">
+        <label for="c">c</label>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        let ans = []
+        let score = 0
+        const form = document.getElementById('form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let radioBut = document.getElementsByTagName('input')
+            console.log(radioBut)
+            ans = []
+            for (let i = 0; i < radioBut.length; i++) {
+                console.log(radioBut[i].id)
+                if (radioBut[i].checked) {
+                    ans.push(radioBut[i].value)
+                }
+            }
+            console.log(ans)
+            score = 0
+            ans.forEach((a) => {
+
+
+                console.log(a)
+                if (a === 'w') {
+                    score += 1
+                }
+            })
+            console.log(score)
+
+        })
+
+    </script>
+</body>
+
+</html>
