@@ -22,10 +22,10 @@ let lastTime = 0;
 
 let ravens = [];
 let explosions = [];
-let pictures = [
-    "img1.png", "img2.png", "img3.png", "img4.png",
-    "img5.png", "img6.png", "img7.png", "img8.png", "img9.png", "img10.png", "img11.png", "img12.png", "img13.png", "img14.png", "img15.png", "img16.png", "img17.png", "img18.png", "img19.png", "img20.png", "img21.png", "img22.png",
-];
+// let pictures = [
+//     "img1.png", "img2.png", "img3.png", "img4.png",
+//     "img5.png", "img6.png", "img7.png", "img8.png", "img9.png", "img10.png", "img11.png", "img12.png", "img13.png", "img14.png", "img15.png", "img16.png", "img17.png", "img18.png", "img19.png", "img20.png", "img21.png", "img22.png",
+// ];
 
 
 
@@ -53,6 +53,32 @@ const meaningImages = {
     "img21.png": "images/m21.png",
     "img22.png": "images/m22.png",
 };
+
+let pictures = []; // This will be populated dynamically
+
+
+async function loadGameData() {
+    try {
+        const response = await fetch("gamedata.json"); // Fetch JSON
+        const data = await response.json();
+
+        // Extract words and generate image file names dynamically
+        pictures = data.images.flat();
+        // Map images to their meaning images
+        // meaningImages = pictures.reduce((acc, img, index) => {
+        //     acc[img] = `images/m${index + 1}.png`; // Adjust the path if needed
+        //     return acc;
+        // }, {});
+
+        console.log("Game data loaded:", pictures, meaningImages);
+    } catch (error) {
+        console.error("Error loading game data:", error);
+    }
+}
+
+// Load game data before starting the game
+loadGameData().then(() => animate(0)); // Start game after data is loaded
+
 
 const playAgainButton = document.createElement("button");
 playAgainButton.innerText = "Play Again";
@@ -104,19 +130,23 @@ function restartGame() {
 class Raven {
     constructor() {
         this.spriteWidth = 862;
-        this.spriteHeight = 290;
+        this.spriteHeight = 490;
         this.sizeModifier = Math.random() * 0.6 + 0.4;
         this.width = this.spriteWidth / 2;
         this.height = this.spriteHeight / 2;
         this.x = canvas.width;
         this.y = Math.random() * (canvas.height - this.height);
         this.markedForDeletion = false;
-        this.directionX = Math.random() * 2 + 2;
-        this.directionY = Math.random() * 2 - 2.5;
+        this.directionX = Math.random() * 1 + 1;
+        this.directionY = Math.random() * 1 - 1.5;
 
         this.image = new Image();
         this.imageName = pictures[Math.floor(Math.random() * pictures.length)];
-        this.image.src = "images/" + this.imageName;
+        this.image.src = this.imageName;
+        this.image.onerror = () => {
+            console.error("Failed to load image:", this.image.src);
+            this.image.src = "images/img1.png"; // Use a fallback image
+        };
 
         this.frame = 0;
         this.maxFrame = 4;
@@ -262,7 +292,6 @@ music.addEventListener('change', function (e) {
 })
 
 
-
 // Start playing the music as soon as the game is loaded
 backgroundMusic.play().catch((error) => {
     console.log("Music playback failed: ", error);
@@ -313,7 +342,6 @@ function animate(timestamp) {
 
 }
 playAgainButton.addEventListener("click", restartGame);
-
 animate(0);
 
 // Start playing the background music after the user clicks anywhere
