@@ -92,3 +92,48 @@ canvas {
     color: #ffffff;
     font-weight: 500;
 }
+
+@media (max-width: 1000px) {
+    .popup {
+        width: 80%;
+        /* Take 80% of the screen width */
+        height: auto;
+        /* Adjust height automatically */
+        padding: 15px;
+        /* Add some padding */
+        font-size: 16px;
+        /* Adjust font size for better readability */
+    }
+
+    .popup p {
+        font-size: 10px;
+        /* Adjust text size for smaller screens */
+    }
+
+    #playAgainButton {
+        width: 80%;
+        /* Make the Play Again button wider on mobile */
+        font-size: 18px;
+        /* Adjust the font size */
+        padding: 12px 0;
+        /* Increase padding for better touch experience */
+        bottom: 10px;
+        /* Ensure it stays at the bottom */
+    }
+
+    #settings {
+        font-size: 50px;
+        /* Adjust settings icon size */
+        top: 3%;
+        /* Adjust icon position for mobile */
+        left: 85%;
+        /* Keep it on the right */
+    }
+
+    .button {
+        width: 150px;
+        height: 40px;
+        font-size: 10px;
+        /* Adjust button size for smaller screens */
+    }
+}

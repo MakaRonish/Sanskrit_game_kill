@@ -11,6 +11,9 @@ collisionCanvas.height = window.innerHeight;
 let frameId;
 let pausedTime = 0;
 
+let paused = false;
+
+
 let score = 0;
 let lives = 5; // New: Lives counter
 let gameover = false;
@@ -22,36 +25,12 @@ let lastTime = 0;
 
 let ravens = [];
 let explosions = [];
-// let pictures = [
-//     "img1.png", "img2.png", "img3.png", "img4.png",
-//     "img5.png", "img6.png", "img7.png", "img8.png", "img9.png", "img10.png", "img11.png", "img12.png", "img13.png", "img14.png", "img15.png", "img16.png", "img17.png", "img18.png", "img19.png", "img20.png", "img21.png", "img22.png",
-// ];
 
 
 
-const meaningImages = {
-    "img1.png": "images/m1.png",
-    "img2.png": "images/m2.png",
-    "img3.png": "images/m3.png",
-    "img4.png": "images/m4.png",
-    "img5.png": "images/m5.png",
-    "img6.png": "images/m6.png",
-    "img7.png": "images/m7.png",
-    "img8.png": "images/m8.png",
-    "img9.png": "images/m9.png",
-    "img10.png": "images/m10.png",
-    "img11.png": "images/m11.png",
-    "img12.png": "images/m12.png",
-    "img13.png": "images/m13.png",
-    "img14.png": "images/m14.png",
-    "img15.png": "images/m15.png",
-    "img16.png": "images/m16.png",
-    "img17.png": "images/m17.png",
-    "img18.png": "images/m18.png",
-    "img19.png": "images/m19.png",
-    "img20.png": "images/m20.png",
-    "img21.png": "images/m21.png",
-    "img22.png": "images/m22.png",
+
+let meaningImages = {
+
 };
 
 let pictures = []; // This will be populated dynamically
@@ -64,11 +43,10 @@ async function loadGameData() {
 
         // Extract words and generate image file names dynamically
         pictures = data.images.flat();
-        // Map images to their meaning images
-        // meaningImages = pictures.reduce((acc, img, index) => {
-        //     acc[img] = `images/m${index + 1}.png`; // Adjust the path if needed
-        //     return acc;
-        // }, {});
+
+        data.images[0].forEach((img, index) => {
+            meaningImages[img] = data.words[0][index]; // Associate image with meaning
+        });
 
         console.log("Game data loaded:", pictures, meaningImages);
     } catch (error) {
@@ -131,9 +109,9 @@ class Raven {
     constructor() {
         this.spriteWidth = 862;
         this.spriteHeight = 490;
-        this.sizeModifier = Math.random() * 0.6 + 0.4;
-        this.width = this.spriteWidth / 2;
-        this.height = this.spriteHeight / 2;
+
+        this.width = (this.spriteWidth / 3.5);
+        this.height = (this.spriteHeight / 3.5);
         this.x = canvas.width;
         this.y = Math.random() * (canvas.height - this.height);
         this.markedForDeletion = false;
@@ -218,7 +196,7 @@ class Explosion {
         }
     }
     draw() {
-        ctx.drawImage(this.image, this.spriteWidth * this.frame, 0, this.spriteWidth, this.spriteHeight, this.x, this.y - this.size / 4, this.size / 2, this.size / 2);
+        ctx.drawImage(this.image, this.spriteWidth * this.frame, 0, this.spriteWidth, this.spriteHeight, this.x - this.size / 4, this.y - this.size / 4, this.size / 2, this.size / 2);
     }
 }
 
@@ -228,8 +206,22 @@ let imageX = 50;
 let imageY = 150;
 let imageTimeout = null;
 
-window.addEventListener("click", function (e) {
-    const detectPixelColor = collisionCtx.getImageData(e.x, e.y, 1, 1);
+
+
+function handleClickOrTouch(e) {
+    // Prevents default behavior like scrolling on touch
+
+    // Get touch coordinates for mobile or mouse coordinates for desktop
+    let x, y;
+    if (e.touches) {
+        x = e.touches[0].clientX;
+        y = e.touches[0].clientY;
+    } else {
+        x = e.x;
+        y = e.y;
+    }
+
+    const detectPixelColor = collisionCtx.getImageData(x, y, 1, 1);
     const pc = detectPixelColor.data;
 
     ravens.forEach((object) => {
@@ -241,7 +233,7 @@ window.addEventListener("click", function (e) {
             object.markedForDeletion = true;
             score++;
 
-            explosions.push(new Explosion(object.x, object.y, object.width));
+            explosions.push(new Explosion(x, y, object.width));
 
             // Show Meaning Image
             setTimeout(() => {
@@ -249,8 +241,8 @@ window.addEventListener("click", function (e) {
                 if (imagePath) {
                     displayedImage = new Image();
                     displayedImage.src = imagePath;
-                    imageX = object.x - 50;
-                    imageY = object.y - 50;
+                    imageX = x - 150;
+                    imageY = y - 50;
 
                     clearTimeout(imageTimeout);
                     imageTimeout = setTimeout(() => {
@@ -260,18 +252,27 @@ window.addEventListener("click", function (e) {
             }, 250); // Delay to sync with explosion
         }
     });
-});
+}
+
+// Attach event listeners for both click and touch
+window.addEventListener("click", handleClickOrTouch);
+window.addEventListener("touchstart", handleClickOrTouch);
+
 
 function drawScore() {
+    ctx.clearRect(80, 40, 450, 150);
+    ctx.save();
     ctx.fillStyle = "black";
     ctx.fillText("Score: " + score, 100, 75);
     ctx.fillText("Lives: " + lives, 100, 125);
     ctx.fillStyle = "white";
     ctx.fillText("Score: " + score, 100, 80);
     ctx.fillText("Lives: " + lives, 100, 130);
+    ctx.restore();
 
     if (displayedImage) {
-        ctx.drawImage(displayedImage, imageX, imageY, 430, 130);
+        ctx.drawImage(displayedImage, imageX, imageY, 300, 100);
+
     }
 }
 
@@ -300,7 +301,8 @@ backgroundMusic.play().catch((error) => {
 
 // Handle Game Over
 function gameOver() {
-    drawScore()
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawScore();
 
     ctx.textAlign = 'center';
     ctx.fillStyle = "black";
@@ -317,6 +319,8 @@ function animate(timestamp) {
 
         return;
     } // Stop animation if game over
+
+    if (paused) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     collisionCtx.clearRect(0, 0, canvas.width, canvas.height);
@@ -353,19 +357,25 @@ window.addEventListener('click', () => {
 const popup = document.getElementById('popup');
 function showpopup() {
     popup.style.display = 'block';
-    cancelAnimationFrame(frameId);
+    paused = true;
+    // cancelAnimationFrame(frameId);
     pausedTime = performance.now();
 
 }
 
 function closepopup() {
     popup.style.display = 'none';
-    let currentTime = performance.now();
-    let deltaPause = currentTime - pausedTime; // Calculate the paused duration
-    lastTime += deltaPause; // Adjust the last time to resume correctly
+    // let currentTime = performance.now();
+    // let deltaPause = currentTime - pausedTime; // Calculate the paused duration
+    // lastTime += deltaPause; // Adjust the last time to resume correctly
+
+    paused = false;
     animate(lastTime);
 
 }
+
+const settingsButton = document.getElementById('settings'); // Assuming this is the settings button element
+settingsButton.addEventListener('click', showpopup);
 
 
 
