@@ -1,3 +1,5 @@
+
+
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
 canvas.width = window.innerWidth;
@@ -34,6 +36,7 @@ let meaningImages = {
 };
 
 let pictures = []; // This will be populated dynamically
+
 
 
 async function loadGameData() {
@@ -109,9 +112,12 @@ class Raven {
     constructor() {
         this.spriteWidth = 862;
         this.spriteHeight = 490;
+        const isMobile = window.innerWidth < 1000; // Adjust this threshold if needed
 
-        this.width = (this.spriteWidth / 3.5);
-        this.height = (this.spriteHeight / 3.5);
+        const scaleFactor = isMobile ? 6 : 3.5; // Smaller size on mobile
+        this.width = this.spriteWidth / scaleFactor;
+        this.height = this.spriteHeight / scaleFactor;
+
         this.x = canvas.width;
         this.y = Math.random() * (canvas.height - this.height);
         this.markedForDeletion = false;
@@ -209,8 +215,6 @@ let imageTimeout = null;
 
 
 function handleClickOrTouch(e) {
-    // Prevents default behavior like scrolling on touch
-
     // Get touch coordinates for mobile or mouse coordinates for desktop
     let x, y;
     if (e.touches) {
@@ -262,19 +266,36 @@ window.addEventListener("touchstart", handleClickOrTouch);
 function drawScore() {
     ctx.clearRect(80, 40, 450, 150);
     ctx.save();
+
+    // Set the font size smaller
+    ctx.font = "25px impact"; // Adjust font size here
+
     ctx.fillStyle = "black";
-    ctx.fillText("Score: " + score, 100, 75);
-    ctx.fillText("Lives: " + lives, 100, 125);
+    ctx.fillText("Score: " + score, 100, 30);
+    ctx.fillText("Lives: " + lives, 100, 65);
     ctx.fillStyle = "white";
-    ctx.fillText("Score: " + score, 100, 80);
-    ctx.fillText("Lives: " + lives, 100, 130);
+    ctx.fillText("Score: " + score, 100, 35);
+    ctx.fillText("Lives: " + lives, 100, 70);
     ctx.restore();
 
-    if (displayedImage) {
-        ctx.drawImage(displayedImage, imageX, imageY, 300, 100);
+    let imageWidth = 300;
+    let imageHeight = 100;
+    let x = 0;
+    if (window.innerWidth < 1000) {
+        // Scale the image down for smaller screens (mobile)
+        imageWidth = 150;  // Example smaller width
+        imageHeight = 50;
+        x = 90
 
+        // Example smaller height
+    }
+
+    if (displayedImage) {
+        ctx.drawImage(displayedImage, imageX
+            + x, imageY + 10, imageWidth, imageHeight);
     }
 }
+
 
 const music = document.getElementById('slider')
 let musicDisplay = document.getElementById('musicvolume')
@@ -365,9 +386,7 @@ function showpopup() {
 
 function closepopup() {
     popup.style.display = 'none';
-    // let currentTime = performance.now();
-    // let deltaPause = currentTime - pausedTime; // Calculate the paused duration
-    // lastTime += deltaPause; // Adjust the last time to resume correctly
+
 
     paused = false;
     animate(lastTime);
